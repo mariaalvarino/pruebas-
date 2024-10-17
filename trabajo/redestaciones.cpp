@@ -1,4 +1,4 @@
-#include "RedEstaciones.h"
+#include "redestaciones.h"
 #include <iostream>
 
 // Constructor que inicializa la red de estaciones
@@ -34,7 +34,7 @@ void RedEstaciones::eliminarEstacion(const std::string& codigo) {
         if (estaciones[i]->getCodigo() == codigo) {
             if (estaciones[i]->tieneSurtidoresActivos()) {
                 std::cout << "No se puede eliminar la estación " << codigo << " porque tiene surtidores activos." << std::endl;
-                return;
+                    return;
             }
             delete estaciones[i];  // Liberar la memoria de la estación eliminada
             // Desplazar las estaciones restantes
@@ -44,7 +44,7 @@ void RedEstaciones::eliminarEstacion(const std::string& codigo) {
             estaciones[contadorEstaciones - 1] = nullptr;  // Limpiar el último puntero
             contadorEstaciones--;
             std::cout << "Estación " << codigo << " eliminada." << std::endl;
-            return;
+                return;
         }
     }
     std::cout << "Estación no encontrada." << std::endl;
@@ -64,7 +64,7 @@ void RedEstaciones::calcularVentasTotal(float& totalRegular, float& totalPremium
 EstacionServicio* RedEstaciones::getEstacion(int index) {
     if (index < 0 || index >= contadorEstaciones) {
         std::cout << "Índice fuera de rango: " << index << std::endl;
-        return nullptr;  // Retorna nullptr si el índice es inválido
+            return nullptr;  // Retorna nullptr si el índice es inválido
     }
     return estaciones[index];  // Retorna un puntero a la estación
 }
@@ -73,12 +73,7 @@ EstacionServicio* RedEstaciones::getEstacion(int index) {
 int RedEstaciones::getContadorEstaciones() const {
     return contadorEstaciones;
 }
-void RedEstaciones::fijarPreciosCombustible(float precioRegular, float precioPremium, float precioEcoExtra) {
-    preciosCombustible[0] = precioRegular;
-    preciosCombustible[1] = precioPremium;
-    preciosCombustible[2] = precioEcoExtra;
-    std::cout << "Precios actualizados." << std::endl;
-}
+
 bool RedEstaciones::verificarFugas(const std::string& codigoEstacion) const {
     EstacionServicio* estacion = getEstacionPorCodigo(codigoEstacion);
     if (estacion) {
@@ -89,11 +84,3 @@ bool RedEstaciones::verificarFugas(const std::string& codigoEstacion) const {
     }
 }
 
-EstacionServicio* RedEstaciones::getEstacionPorCodigo(const std::string& codigo) const {
-    for (int i = 0; i < contadorEstaciones; ++i) {
-        if (estaciones[i]->getCodigo() == codigo) {
-            return estaciones[i];
-        }
-    }
-    return nullptr;
-}
