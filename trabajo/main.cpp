@@ -1,194 +1,211 @@
 #include "redestaciones.h"
 #include <iostream>
-#include <cstdlib>  // Para el rand()
-#include <ctime>    // Para la semilla de rand()
-
 using namespace std;
-void menu(){
-    cout <<endl<< "         MENU PRINCIPAL    " << endl;
-    cout << "1 Agregar estacion de servicio" << endl;
-    cout << "2 Eliminar estacion de Servicio" << endl;
-    cout << "3 Agregar surtidor a una estacion" << endl;
-    cout << "4 Eliminar surtidor de una estacion" << endl;
-    cout << "5 Simular venta de combustible" << endl;
-    cout << "6 Mostrar historial de transacciones de una estacion" << endl;
-    cout << "7 Calcular ventas totales por categoria" << endl;
-    cout << "8 Fijar precios de combustible por region" << endl;
-    cout << "9 verificar fugas de combustible" << endl;
-    cout << "10 Salir" << endl;
-    cout << "Seleccione una opcion: ";
-}
+
 int main() {
-    srand(time(0));  // Inicializa la semilla para números aleatorios
+    cout << "Antes de instanciar" << endl;
 
     RedEstaciones redEstaciones(100);  // Se inicializa la red con capacidad para 100 estaciones
+
+    // Crear estaciones de servicio
+    EstacionServicio estacion1("Estación Norte", "321", "Gerente1", "Norte", 10.0, -74.0, 200, 150, 100);
+    EstacionServicio estacion2("Estación Centro", "E002", "Gerente2", "Centro", 5.0, -75.0, 250, 200, 150);
+    
+    // Agregar estaciones a la red
+    redEstaciones.agregarEstacion(estacion1);
+    redEstaciones.agregarEstacion(estacion2);
+
+    // Agregar surtidores a las estaciones
+    estacion1.agregarSurtidor(101, "Modelo A");
+    estacion1.agregarSurtidor(102, "Modelo B");
+    estacion2.agregarSurtidor(201, "Modelo C");
 
     int opcion;
 
     do {
-
-        menu();
-        cin >> opcion;
+        std::cout << "\n*** MENÚ PRINCIPAL ***" << std::endl;
+        std::cout << "1. Agregar Estación de Servicio" << std::endl;
+        std::cout << "2. Eliminar Estación de Servicio" << std::endl;
+        std::cout << "3. Agregar Surtidor a una Estación" << std::endl;
+        std::cout << "4. Eliminar Surtidor de una Estación" << std::endl;
+        std::cout << "5. Simular Venta de Combustible" << std::endl;
+        std::cout << "6. Mostrar Historial de Transacciones de una Estación" << std::endl;
+        std::cout << "7. Calcular Ventas Totales por Categoría" << std::endl;
+        std::cout << "8. Fijar Precios de Combustible" << std::endl;
+        std::cout << "9. Salir" << std::endl;
+        std::cout << "Seleccione una opción: ";
+        std::cin >> opcion;
 
         switch (opcion) {
-        case 1: {
-            // agregar estacion
-            std::string nombre, codigo, gerente, region;
-            float lat, lon;
-            cout<<endl << "Ingrese el nombre de la estacion: "; cin >> nombre;
-            cout << "Ingrese el codigo de la estacion: "; cin >> codigo;
-            cout << "Ingrese el nombre del gerente: "; cin >> gerente;
-            cout << "Ingrese la region (Norte/Centro/Sur): "; cin >> region;
-            cout << "Ingrese la latitud de la estacion: "; cin >> lat;
-            cout << "Ingrese la longitud de la estacion: "; cin >> lon;
+            case 1: {
+                // Agregar Estación de Servicio
+                std::string nombre, codigo, gerente, region;
+                float lat, lon;
+                std::cout << "\nIngrese el nombre de la estación: "; std::cin >> nombre;
+                std::cout << "Ingrese el código de la estación: "; std::cin >> codigo;
+                std::cout << "Ingrese el nombre del gerente: "; std::cin >> gerente;
+                std::cout << "Ingrese la región (Norte/Centro/Sur): "; std::cin >> region;
+                std::cout << "Ingrese la latitud de la estación: "; std::cin >> lat;
+                std::cout << "Ingrese la longitud de la estación: "; std::cin >> lon;
 
-            EstacionServicio estacion(nombre, codigo, gerente, region, lat, lon, 150, 180, 170);
-            redEstaciones.agregarEstacion(estacion);
-            cout << "Estacion de servicio agregada exitosamente." << endl;
-            break;
-        }
-        case 2: {
-            // Eliminar estacion
-            string codigo;
-            cout << endl<<"Ingrese el codigo de la estacion a eliminar: "; cin >> codigo;
-            redEstaciones.eliminarEstacion(codigo);
-            break;
-        }
-        case 3: {
-            // Agregar surtidor
-            string codigoEstacion;
-            int codigoSurtidor;
-            string modeloSurtidor;
-            cout <<endl<< "Ingrese el codigo de la estacion: "; cin >> codigoEstacion;
-            cout<<endl << "Ingrese el codigo del surtidor: "; cin >> codigoSurtidor;
-            cout << "Ingrese el modelo del surtidor: "; cin >> modeloSurtidor;
+                // Crear la estación y agregarla a la red
+                EstacionServicio estacion(nombre, codigo, gerente, region, lat, lon, 150, 180, 170);
+                redEstaciones.agregarEstacion(estacion);
+                std::cout << "Estación de servicio agregada exitosamente." << std::endl;
+                break;
+            }
+            case 2: {
+                // Eliminar Estación de Servicio
+                std::string codigo;
+                std::cout << "\nIngrese el código de la estación a eliminar: "; std::cin >> codigo;
+                redEstaciones.eliminarEstacion(codigo);
+                break;
+            }
+            case 3: {
+                // Agregar Surtidor a una Estación
+                std::string codigoEstacion;
+                int codigoSurtidor;
+                std::string modeloSurtidor;
+                std::cout << "\nIngrese el código de la estación: "; std::cin >> codigoEstacion;
+                std::cout << "Ingrese el código del surtidor: "; std::cin >> codigoSurtidor;
+                std::cout << "Ingrese el modelo del surtidor: "; std::cin >> modeloSurtidor;
 
-            bool estacionEncontrada = false;
-            for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
-                EstacionServicio* estacion = redEstaciones.getEstacion(i);
-                if (estacion && estacion->getCodigo() == codigoEstacion) {
-                    estacion->agregarSurtidor(codigoSurtidor, modeloSurtidor);
-                    cout << "Surtidor agregado a la estacion" << endl;
-                    estacionEncontrada = true;
-                    break;
+                // Asegúrate de que el código de estación sea válido
+                bool estacionEncontrada = false;
+                for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
+                    EstacionServicio* estacion = redEstaciones.getEstacion(i);
+                    if (estacion && estacion->getCodigo() == codigoEstacion) {
+                        estacion->agregarSurtidor(codigoSurtidor, modeloSurtidor);
+                        std::cout << "Surtidor agregado a la estación." << std::endl;
+                        estacionEncontrada = true;
+                        break;
+                    }
                 }
-            }
-            if (!estacionEncontrada) {
-                cout << "Estacion no encontrada." <<endl;
-            }
-            break;
-        }
-        case 4: {
-            // Eliminar Surtidor
-            std::string codigoEstacion;
-            int codigoSurtidor;
-            cout << endl<<"Ingrese el codigo de la estacion: "; cin >> codigoEstacion;
-            cout << "Ingrese el codigo del surtidor: "; cin >> codigoSurtidor;
-
-            bool estacionEncontrada = false;
-            for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
-                EstacionServicio* estacion = redEstaciones.getEstacion(i);
-                if (estacion && estacion->getCodigo() == codigoEstacion) {
-                    estacion->eliminarSurtidor(codigoSurtidor);
-                    std::cout << "Surtidor eliminado de la estacion" << endl;
-                    estacionEncontrada = true;
-                    break;
+                if (!estacionEncontrada) {
+                    std::cout << "Estación no encontrada." << std::endl;
                 }
+                break;
             }
-            if (!estacionEncontrada) {
-                cout << "Estacion no encontrada" << endl;
-            }
-            break;
-        }
-        case 5:{
-            // Simular Venta de Combustible
-            string codigoEstacion, categoria;
-            float cantidadSolicitada, precioPorLitro;
-            int documentoCliente;
-            cout << endl<<"Ingrese el codigo de la estacion: "; cin >> codigoEstacion;
-            cout << "Ingrese la categoria de combustible (Regular, Premium, EcoExtra): "; cin >> categoria;
-            cout << "Ingrese la cantidad de combustible solicitada: "; cin >> cantidadSolicitada;
-            cout << "Ingrese el precio por litro: "; cin >> precioPorLitro;
-            cout << "Ingrese el documento del cliente: "; cin >> documentoCliente;
+            case 4: {
+                // Eliminar Surtidor de una Estación
+                std::string codigoEstacion;
+                int codigoSurtidor;
+                std::cout << "\nIngrese el código de la estación: "; std::cin >> codigoEstacion;
+                std::cout << "Ingrese el código del surtidor a eliminar: "; std::cin >> codigoSurtidor;
 
-            bool estacionEncontrada = false;
-
-            for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
-                EstacionServicio* estacion = redEstaciones.getEstacion(i);
-                if (estacion && estacion->getCodigo() == codigoEstacion) {
-                    estacion->simularVenta(cantidadSolicitada, precioPorLitro, categoria, documentoCliente);
-                    cout << "Venta simulada exitosamente" << endl;
-                    estacionEncontrada = true;
-                    break;
+                bool estacionEncontrada = false;
+                for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
+                    EstacionServicio* estacion = redEstaciones.getEstacion(i);
+                    if (estacion && estacion->getCodigo() == codigoEstacion) {
+                        estacion->eliminarSurtidor(codigoSurtidor);
+                        std::cout << "Surtidor eliminado de la estación." << std::endl;
+                        estacionEncontrada = true;
+                        break;
+                    }
                 }
-            }
-            if (!estacionEncontrada) {
-                cout << "Estacion no encontrada" << endl;
-            }
-            break;
-        }
-        case 6: {
-            // Mostrar historial de transacciones
-            string codigoEstacion;
-            cout <<endl<< "Ingrese el codigo de la estacion: "; cin >> codigoEstacion;
-
-            bool estacionEncontrada = false;
-            for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
-                EstacionServicio* estacion = redEstaciones.getEstacion(i);
-                if (estacion && estacion->getCodigo() == codigoEstacion) {
-                    estacion->mostrarSurtidores();
-                    estacionEncontrada = true;
-                    break;
+                if (!estacionEncontrada) {
+                    std::cout << "Estación no encontrada." << std::endl;
                 }
+                break;
             }
-            if (!estacionEncontrada) {
-                cout << "Estacion no encontrada " << std::endl;
+            case 5: {
+                // Simular Venta de Combustible
+                std::string codigoEstacion, categoria;
+                float cantidadSolicitada;
+                std::cout << "\nIngrese el código de la estación: "; std::cin >> codigoEstacion;
+                std::cout << "Ingrese la categoría de combustible (Regular, Premium, EcoExtra): "; std::cin >> categoria;
+                std::cout << "Ingrese la cantidad de combustible solicitada: "; std::cin >> cantidadSolicitada;
+
+                bool estacionEncontrada = false;
+                for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
+                    EstacionServicio* estacion = redEstaciones.getEstacion(i);
+                    if (estacion && estacion->getCodigo() == codigoEstacion) {
+                        estacion->simularVenta(cantidadSolicitada, categoria, 12345); // Documento cliente por defecto
+                        std::cout << "Venta simulada exitosamente." << std::endl;
+                        estacionEncontrada = true;
+                        break;
+                    }
+                }
+                if (!estacionEncontrada) {
+                    std::cout << "Estación no encontrada." << std::endl;
+                }
+                break;
             }
-            break;
-        }
-        case 7: {
-            // Calcular ventas totales por categoria
-            float totalRegular = 0, totalPremium = 0, totalEcoExtra = 0;
-            redEstaciones.calcularVentasTotal(totalRegular, totalPremium, totalEcoExtra);
+            case 6: {
+                // Mostrar Historial de Transacciones
+                std::string codigoEstacion;
+                std::cout << "\nIngrese el código de la estación: "; std::cin >> codigoEstacion;
 
-            cout <<endl<< "Ventas totales en la red de estaciones:" << endl;
-            cout << "Regular: " << totalRegular << " pesos" << endl;
-            cout << "Premium: " << totalPremium << " pesos" << endl;
-            cout << "EcoExtra: " << totalEcoExtra << " pesos" << endl;
-            break;
-        }
-        case 8: {
-            // Fijar precios del combustible
-            float precioRegular, precioPremium, precioEcoExtra;
-            cout <<endl<< "Ingrese el precio por litro para Regular: "; cin >> precioRegular;
-            cout << "Ingrese el precio por litro para Premium: "; cin >> precioPremium;
-            cout << "Ingrese el precio por litro para EcoExtra: "; cin >> precioEcoExtra;
-
-            redEstaciones.fijarPreciosCombustible(precioRegular, precioPremium, precioEcoExtra);
-            break;
-        }
-        case 9: {
-            // Verificar Fugas de Combustible
-            std::string codigoEstacion;
-            std::cout << "\nIngrese el código de la estación para verificar fugas: "; std::cin >> codigoEstacion;
-
-            if (redEstaciones.verificarFugas(codigoEstacion)) {
-                std::cout << "Se detectó fuga en la estación." << std::endl;
-            } else {
-                std::cout << "No se detectaron fugas en la estación." << std::endl;
+                bool estacionEncontrada = false;
+                for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
+                    EstacionServicio* estacion = redEstaciones.getEstacion(i);
+                    if (estacion && estacion->getCodigo() == codigoEstacion) {
+                        estacion->mostrarSurtidores();
+                        estacionEncontrada = true;
+                        break;
+                    }
+                }
+                if (!estacionEncontrada) {
+                    std::cout << "Estación no encontrada." << std::endl;
+                }
+                break;
             }
-            break;
+            case 7: {
+                // Calcular Ventas Totales por Categoría
+                float totalRegular = 0, totalPremium = 0, totalEcoExtra = 0;
+                redEstaciones.calcularVentasTotal(totalRegular, totalPremium, totalEcoExtra);
 
+                std::cout << "\nVentas Totales en la Red de Estaciones:" << std::endl;
+                std::cout << "Regular: " << totalRegular << " pesos" << std::endl;
+                std::cout << "Premium: " << totalPremium << " pesos" << std::endl;
+                std::cout << "EcoExtra: " << totalEcoExtra << " pesos" << std::endl;
+                break;
+            }
+            case 8: {
+                // Fijar precios de combustible
+                float precioRegNorte, precioPremNorte, precioEcoNorte;
+                float precioRegCentro, precioPremCentro, precioEcoCentro;
+                float precioRegSur, precioPremSur, precioEcoSur;
+
+                std::cout << "Ingrese el precio de Regular para Norte: "; std::cin >> precioRegNorte;
+                std::cout << "Ingrese el precio de Premium para Norte: "; std::cin >> precioPremNorte;
+                std::cout << "Ingrese el precio de EcoExtra para Norte: "; std::cin >> precioEcoNorte;
+
+                std::cout << "Ingrese el precio de Regular para Centro: "; std::cin >> precioRegCentro;
+                std::cout << "Ingrese el precio de Premium para Centro: "; std::cin >> precioPremCentro;
+                std::cout << "Ingrese el precio de EcoExtra para Centro: "; std::cin >> precioEcoCentro;
+
+                std::cout << "Ingrese el precio de Regular para Sur: "; std::cin >> precioRegSur;
+                std::cout << "Ingrese el precio de Premium para Sur: "; std::cin >> precioPremSur;
+                std::cout << "Ingrese el precio de EcoExtra para Sur: "; std::cin >> precioEcoSur;
+
+                // Actualizar precios en cada estación
+                for (int i = 0; i < redEstaciones.getContadorEstaciones(); i++) {
+                    EstacionServicio* estacion = redEstaciones.getEstacion(i);
+                    if (estacion->getRegion() == "Norte") {
+                        estacion->precios.precioRegularNorte = precioRegNorte;
+                        estacion->precios.precioPremiumNorte = precioPremNorte;
+                        estacion->precios.precioEcoNorte = precioEcoNorte;
+                    } else if (estacion->getRegion() == "Centro") {
+                        estacion->precios.precioRegularCentro = precioRegCentro;
+                        estacion->precios.precioPremiumCentro = precioPremCentro;
+                        estacion->precios.precioEcoCentro = precioEcoCentro;
+                    } else if (estacion->getRegion() == "Sur") {
+                        estacion->precios.precioRegularSur = precioRegSur;
+                        estacion->precios.precioPremiumSur = precioPremSur;
+                        estacion->precios.precioEcoSur = precioEcoSur;
+                    }
+                }
+                std::cout << "Precios de combustible actualizados." << std::endl;
+                break;
+            }
+            case 9:
+                std::cout << "Saliendo del programa." << std::endl;
+                break;
+            default:
+                std::cout << "Opción inválida, por favor intente de nuevo." << std::endl;
         }
-        case 10:
-            cout << "Gracias por usar nuestros servicios" << endl;
-            break;
-
-        default:
-            cout << "Opcion invalida seleccione una opcion valida" << endl;
-        }
-
-    } while (opcion != 10);
+    } while (opcion != 9);
 
     return 0;
 }
