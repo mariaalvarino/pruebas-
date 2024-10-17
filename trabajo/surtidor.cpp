@@ -1,5 +1,4 @@
 #include "surtidor.h"
-
 #include <iostream>
 
 Surtidor::Surtidor() : codigo(0), modelo(""), activo(false), numeroTransacciones(0) {}
@@ -13,13 +12,7 @@ bool Surtidor::isActivo() const { return activo; }
 int Surtidor::getNumeroTransacciones() const {
     return numeroTransacciones;
 }
-float Surtidor::getTotalVendido() const {
-    float total = 0;
-    for (int i = 0; i < numeroTransacciones; ++i) {
-        total += historicoTransacciones[i].getCantidad();
-    }
-    return total;
-}
+
 const Transaccion& Surtidor::getTransaccion(int index) const {
     if (index < 0 || index >= numeroTransacciones) {
         throw std::out_of_range("Índice fuera de rango.");
