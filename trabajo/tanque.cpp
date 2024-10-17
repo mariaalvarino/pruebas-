@@ -85,4 +85,3 @@ void Tanque::asignarCapacidadAleatoria() {
     std::cout << "Premium: " << capacidadPremium << " litros\n";
     std::cout << "EcoExtra: " << capacidadEcoExtra << " litros\n";
 }
-
